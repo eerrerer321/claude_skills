@@ -1,0 +1,4 @@
+interface:
+  display_name: "證據化除錯"
+  short_description: "以可重現與可否證實驗定位程式根因並建立回歸驗證策略"
+  default_prompt: "Use $diagnose-with-evidence to diagnose this problem before proposing a fix."
