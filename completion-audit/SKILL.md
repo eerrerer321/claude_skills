@@ -9,7 +9,7 @@ description: >-
   goes to a real page", "push this toward launchable quality", "run the completion loop / 補全循環 /
   稽核循環", or asks for a multi-hour self-improving pass over a codebase — even across different
   projects. Sets up a time-boxed recurring schedule, rotates through every user role, and runs a
-  MANDATORY multi-advisor AI deliberation each iteration: Opus 4.8 chairs and implements, while a
+  MANDATORY multi-advisor AI deliberation each iteration: Opus chairs and implements, while a
   roster of advisors — GPT-5.6 terra (via codex), DeepSeek-V4-Flash (via opencode), Grok 4.5 (via
   the `grok` CLI), and Gemini 3.6 Flash (via the Antigravity `agy` CLI) — give independent opinions
   that Opus synthesizes and decides on. Asks the owner up front which advisors still have quota,
@@ -23,7 +23,7 @@ genuine completeness gap and fixes it properly, rotating through every user role
 time-box ends. It is the opposite of a one-shot review — the value is in the loop.
 
 Every iteration runs a **multi-advisor AI deliberation** (chair + the advisors you selected) before the fix
-is decided. You (Opus 4.8) are the **chair**: you frame the problem, collect independent opinions
+is decided. You (Opus) are the **chair**: you frame the problem, collect independent opinions
 from the advisors, synthesize them, resolve disagreements, make the final call, and do all the
 actual editing and verifying yourself. The advisors advise; they never touch the real repo.
 
@@ -34,7 +34,7 @@ Nothing here is project-specific: detect the stack from the repo and adapt.
 
 | Role | Who | How it's invoked | Can edit repo? |
 |------|-----|------------------|----------------|
-| **Chair / implementer / decider** | **Opus 4.8 (you)** | this session | **Yes — the only one** |
+| **Chair / implementer / decider** | **Opus (you)** | this session | **Yes — the only one** |
 | Advisor A | **GPT-5.6 terra** | `codex` CLI, read-only | No (read-only flag) |
 | Advisor B | **DeepSeek-V4-Flash** | `opencode` CLI, read-only `audit-advisor` agent | No (locked-down agent) |
 | Advisor C | **Gemini 3.6 Flash (High)** | Antigravity `agy -p`, headless, via `agy_advisor.sh` | No — **only** because it runs against a disposable copy / tool-free prompt (see warning) |

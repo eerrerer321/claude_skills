@@ -1,6 +1,6 @@
 # Porting the `completion-audit` skill to another computer
 
-This skill is a **chair + four-advisor council**. The chair (Opus 4.8, in Claude Code) does all
+This skill is a **chair + four-advisor council**. The chair (Opus, in Claude Code) does all
 editing; four external CLIs give read-only second opinions:
 
 | Advisor | CLI | Model |
