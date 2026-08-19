@@ -41,7 +41,7 @@ echo "[agy_advisor] cwd=$REPO wait=${WAIT}s prompt=${#PROMPT} chars" >&2
 
 # prompt passed via env to avoid quoting/escaping issues with code excerpts
 export AGY_PROMPT="$PROMPT"
-RAW="$(cd "$REPO" && timeout $((WAIT+30)) agy -p "$AGY_PROMPT" --model gemini-3.6-flash-high \
+RAW="$(cd "$REPO" && timeout $((WAIT+30)) agy -p "$AGY_PROMPT" --model gemini-3.7-flash-high \
     --output-format json --print-timeout "${WAIT}s" </dev/null)"
 RC=$?
 

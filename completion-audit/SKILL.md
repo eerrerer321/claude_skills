@@ -10,8 +10,8 @@ description: >-
   稽核循環", or asks for a multi-hour self-improving pass over a codebase — even across different
   projects. Sets up a time-boxed recurring schedule, rotates through every user role, and runs a
   MANDATORY multi-advisor AI deliberation each iteration: Opus chairs and implements, while a
-  roster of advisors — GPT-5.6 terra (via codex), DeepSeek-V4-Flash (via opencode), Grok 4.5 (via
-  the `grok` CLI), and Gemini 3.6 Flash (via the Antigravity `agy` CLI) — give independent opinions
+  roster of advisors — GPT-5.6 terra (via codex), DeepSeek-V4-Flash (via opencode), Grok 4.6 (via
+  the `grok` CLI), and Gemini 3.7 Flash (via the Antigravity `agy` CLI) — give independent opinions
   that Opus synthesizes and decides on. Asks the owner up front which advisors still have quota,
   then spends the rationed ones where coverage is thinnest.
 ---
@@ -37,8 +37,8 @@ Nothing here is project-specific: detect the stack from the repo and adapt.
 | **Chair / implementer / decider** | **Opus (you)** | this session | **Yes — the only one** |
 | Advisor A | **GPT-5.6 terra** | `codex` CLI, read-only | No (read-only flag) |
 | Advisor B | **DeepSeek-V4-Flash** | `opencode` CLI, read-only `audit-advisor` agent | No (locked-down agent) |
-| Advisor C | **Gemini 3.6 Flash (High)** | Antigravity `agy -p`, headless, via `agy_advisor.sh` | No — **only** because it runs against a disposable copy / tool-free prompt (see warning) |
-| Advisor D | **Grok 4.5** | `grok --prompt-file`, headless single-turn | No — **only** because cwd is pinned to a disposable bundle dir (see below) |
+| Advisor C | **Gemini 3.7 Flash (High)** | Antigravity `agy -p`, headless, via `agy_advisor.sh` | No — **only** because it runs against a disposable copy / tool-free prompt (see warning) |
+| Advisor D | **Grok 4.6** | `grok --prompt-file`, headless single-turn | No — **only** because cwd is pinned to a disposable bundle dir (see below) |
 
 ### ⚠️ FIRST STEP OF EVERY RUN — ask the owner which advisors are usable today
 
@@ -54,7 +54,7 @@ session who to use.
 |---|---|---|
 | **DeepSeek** | Free, generous → **use liberally** | Broad sweeps, every round, both areas. False positives are fine — the chair verifies anyway. Weakest at contract/route claims: when it can't see the definition it guesses from naming and still asserts "Critical". |
 | **GPT-5.6 terra** | **Subscribed — quota is ample → use it freely** *(owner, 2026-07-27)* | Cross-file consistency, state-machine guards, "is this coherent with the rest of the system". **Highest hit-rate of the roster** — it repeatedly caught regressions the chair introduced. Call it on every area, and again after implementing (post-fix review). Don't artificially limit to one call. |
-| **Grok 4.5** | **Free but low quota → ration like GPT** | Self-contained logic/contract questions (arithmetic limits, timezone math, single-file concurrency). One call, aimed at whichever area has the least existing coverage. |
+| **Grok 4.6** | **Free but low quota → ration like GPT** | Self-contained logic/contract questions (arithmetic limits, timezone math, single-file concurrency). One call, aimed at whichever area has the least existing coverage. |
 | **Gemini (agy)** | Free, but agentic & unsafe by construction | Breadth on a **disposable copy** only. Heaviest setup cost. |
 
 **Overlap is valuable where it matters** — when two advisors independently converge on the same
@@ -134,7 +134,7 @@ Exact commands (codex/opencode are read-only by construction; agy is contained b
   instead of giving a one-shot opinion — it hangs. `--pure` + the disabled `task` tool keep it a
   single-shot read-only advisor. (Verified: this exact failure happened on first run.)
 
-- **Gemini 3.6 Flash (Antigravity `agy`):** invoke via the wrapper, never raw:
+- **Gemini 3.7 Flash (Antigravity `agy`):** invoke via the wrapper, never raw:
   ```
   bash ~/.claude/skills/completion-audit/agy_advisor.sh <repo-or-disposable-copy-abs-path> <prompt-file> [wait-seconds]
   ```
@@ -161,8 +161,8 @@ Exact commands (codex/opencode are read-only by construction; agy is contained b
   reason to stderr — no output/timeout, unparseable JSON, or `status != SUCCESS`), that is a real
   failure signal: re-run **once** with a larger `wait-seconds`.
 
-- **Grok 4.5 (`grok` CLI):** binary at `C:\Users\User\.grok\bin\grok.exe` (also on PATH as `grok`).
-  Default model `grok-4.5`.
+- **Grok 4.6 (`grok` CLI):** binary at `C:\Users\User\.grok\bin\grok.exe` (also on PATH as `grok`).
+  Default model `grok-4.6`.
   ```
   cd <bundle-dir> && "C:/Users/User/.grok/bin/grok.exe" \
     --cwd <bundle-dir> --prompt-file <bundle-dir>/PROMPT.md \
@@ -350,7 +350,7 @@ Parse from the invocation; ask only if genuinely missing:
 - **Target project** — default to the current working directory. If the user names another repo, use its absolute path and confirm it's a git repo.
 - **Cadence** — default to an *accelerated* cadence (every 30 min) so iterations chain tightly. The cron only fires when the REPL is idle, so a short interval just means "start the next iteration soon after finishing the last" — it never overlaps work.
 - **Available advisors — ALWAYS ask (owner instruction, 2026-07-27).** Before Phase 4, ask which of
-  GPT-5.6 terra / DeepSeek / Grok 4.5 / Gemini still have quota today. Most are free-but-metered and
+  GPT-5.6 terra / DeepSeek / Grok 4.6 / Gemini still have quota today. Most are free-but-metered and
   rotate through exhaustion; calling a dead one wastes wall-clock on a quota error. Offer the roster
   and let the owner deselect. Skip only if they already named the advisors this session. Record the
   answer and stick to it for the whole loop — don't silently re-probe an advisor they excluded.
@@ -392,7 +392,7 @@ Structural audits miss the deep gaps (stubs, fake data, wiring mismatches). Seed
    residue, missing flow steps). Tell it to **exclude** pure external-credential/config blockers.
 2. **DeepSeek scan (opencode):** run the `audit-advisor` opencode command over the same repo with
    the same brief, independently.
-3. **Gemini 3.6 Flash scan (agy):** run `agy_advisor.sh` with the **same brief** against a
+3. **Gemini 3.7 Flash scan (agy):** run `agy_advisor.sh` with the **same brief** against a
    **disposable copy** of the repo (never the live tree — agy can run commands/edit, verified). agy
    is agentic and explores the tree itself, but **`-p` ignores the shell cwd**, so the brief MUST
    **name the copy's absolute path to scan** (e.g. "Audit the repository at `C:\…\copy` …") — don't
@@ -421,7 +421,7 @@ construction, agy contained by isolation — see the council table). Steps:
    make advisors re-scan the whole repo), the constraints (do-not-touch invariants from
    memory/docs), and what a good answer looks like (approach + risks + edge cases). Use the **same
    prompt for every advisor in play** so their opinions are comparable.
-2. **Parallel opinions.** Fire codex (GPT-5.6 terra), opencode (DeepSeek), and agy (Gemini 3.6 Flash)
+2. **Parallel opinions.** Fire codex (GPT-5.6 terra), opencode (DeepSeek), and agy (Gemini 3.7 Flash)
    with that prompt — independently; none sees the others yet. Give the DeepSeek call a unique
    `--title <item-slug>` so its session can be continued in step 4. For agy, append the
    tool-free instruction ("do not use tools/files/commands — answer only from the snippet below")

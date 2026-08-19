@@ -7,8 +7,8 @@ editing; four external CLIs give read-only second opinions:
 |---|---|---|
 | A | `codex` | GPT-5.6 terra |
 | B | `opencode` | DeepSeek-V4-Flash (`audit-advisor` agent) |
-| C | `agy` (Antigravity CLI) | Gemini 3.6 Flash (High) |
-| D | `grok` | Grok 4.5 |
+| C | `agy` (Antigravity CLI) | Gemini 3.7 Flash (High) |
+| D | `grok` | Grok 4.6 |
 
 Moving the skill = **copy 3 files** + **install & log in to 4 CLIs** + **2 runtime prereqs**.
 Copying files alone is NOT enough — the CLIs carry their own auth and cannot be copied.
@@ -45,8 +45,8 @@ Easiest: copy the whole `~\.claude\skills\completion-audit\` folder (contains `S
 |---|---|---|
 | **codex** (GPT-5.6 terra) | npm global (`npm i -g …`); ends up on PATH e.g. `~\AppData\Roaming\npm\codex` | log in to OpenAI/codex |
 | **opencode** (DeepSeek) | npm global; PATH e.g. `~\AppData\Roaming\npm\opencode` | log in; model `opencode/deepseek-v4-flash-free` (pinned in the agent file) |
-| **agy** (Gemini) | Antigravity CLI installer → installs to `~\AppData\Local\agy\bin\agy.exe` | **run `agy` once interactively** to do Google OAuth, then set model to **`Gemini 3.6 Flash (High)`** (the wrapper passes `--model gemini-3.6-flash-high` explicitly) |
-| **grok** (Grok 4.5) | xAI's own installer — a self-updating standalone binary at `~\.grok\bin\grok.exe` (`installer = "internal"`, `auto_update = true` in `~\.grok\config.toml`); it puts itself on PATH. **Not** npm | `grok login` (or run `grok` once interactively). Credentials land in `~\.grok\auth.json` — **don't copy that file, log in on the new machine** |
+| **agy** (Gemini) | Antigravity CLI installer → installs to `~\AppData\Local\agy\bin\agy.exe` | **run `agy` once interactively** to do Google OAuth, then set model to **`Gemini 3.7 Flash (High)`** (the wrapper passes `--model gemini-3.7-flash-high` explicitly) |
+| **grok** (Grok 4.6) | xAI's own installer — a self-updating standalone binary at `~\.grok\bin\grok.exe` (`installer = "internal"`, `auto_update = true` in `~\.grok\config.toml`); it puts itself on PATH. **Not** npm | `grok login` (or run `grok` once interactively). Credentials land in `~\.grok\auth.json` — **don't copy that file, log in on the new machine** |
 
 After installing, confirm each is reachable (Git Bash):
 ```bash
@@ -153,7 +153,7 @@ codex exec -m gpt-5.6-terra -c model_reasoning_effort="xhigh" -s read-only "Repl
 opencode run --pure --agent audit-advisor --variant max "Reply with exactly: OPENCODE_OK"
 ```
 
-**agy (Gemini 3.6 Flash High) — via the wrapper:**
+**agy (Gemini 3.7 Flash High) — via the wrapper:**
 ```bash
 printf '%s\n' 'Do NOT use any tools/files/commands. Reply with exactly: AGY_OK' > /tmp/agy_smoke.txt
 bash ~/.claude/skills/completion-audit/agy_advisor.sh "$(pwd)" /tmp/agy_smoke.txt 40
@@ -162,7 +162,7 @@ Expect `AGY_OK` within a few seconds on CLI 1.1.8. If the wrapper exits non-zero
 one-line reason to stderr (no output/timed out, unparseable JSON, or `status != SUCCESS`) — re-run
 once with a larger wait (e.g. `… 60`).
 
-**grok (Grok 4.5):** *(costs quota — this one is metered, keep the smoke test to one line)*
+**grok (Grok 4.6):** *(costs quota — this one is metered, keep the smoke test to one line)*
 ```bash
 printf '%s\n' 'Do not use any tools or read any files. Reply with exactly: GROK_OK' > /tmp/grok_smoke.md
 grok --prompt-file /tmp/grok_smoke.md --output-format plain < /dev/null
